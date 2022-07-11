@@ -2,10 +2,7 @@ import urllib.request, urllib.parse, urllib.error
 from bs4 import BeautifulSoup
 import re
 import os
-import tkinter
-window = tkinter.Tk()
-window.title('my window')
-window.geometry('1000x700')
+
 
 def get_pdf_arxiv(web_site,path):
     rep = urllib.request.urlopen(urllib.request.Request(web_site))
@@ -47,6 +44,7 @@ def ans(name):
     paper_web = re.findall('view</b></p><ul><li class="ee"><a href="(.*?)" itemprop="url">',the_page,re.S)#存储对应网址
     print(paper_web[0]) 
     for i in range(len(paper_web)):
+            s = s + paper_title[i] + '\n'
             #以下代码去除了原有网页论文名字中无法保存为window文件名的符号，采用下划线_代替
             paper_title[i] = paper_title[i].replace('"', '')
             list = paper_title[i].split(" ")
@@ -63,7 +61,7 @@ def ans(name):
             paper_title[i] = "_".join(list)
             list = paper_title[i].split("</sup>")
             paper_title[i] = "_".join(list)
-            s = s + paper_title[i] + '\n'
+            
             
             if (paper_web[i].find("arxiv") != -1): #查看网址中是否包含arxiv词汇
                 print(paper_title[i])
@@ -72,7 +70,5 @@ def ans(name):
                 path = paper_title[i] + "pdf"
                 if path not in dir_list:
                     get_pdf_arxiv(paper_web[i], path_dir + path)
-    print('s='+s)
-name = input()
-ans(name)
-
+    print(s)
+    return s
