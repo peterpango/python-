@@ -40,11 +40,9 @@ def ans(name):
     the_page = response.read().decode('utf-8')
     s=''
     paper_title = re.findall('<span class="title" itemprop="name">(.*?)</span>',the_page,re.S)#检索页面中给的论文名字
-    print(paper_title[0])
     paper_web = re.findall('view</b></p><ul><li class="ee"><a href="(.*?)" itemprop="url">',the_page,re.S)#存储对应网址
-    print(paper_web[0]) 
     for i in range(len(paper_web)):
-            s = s + paper_title[i] + '\n'
+            s = s + ' •  ' + paper_title[i] + '\n'
             #以下代码去除了原有网页论文名字中无法保存为window文件名的符号，采用下划线_代替
             paper_title[i] = paper_title[i].replace('"', '')
             list = paper_title[i].split(" ")
@@ -61,8 +59,6 @@ def ans(name):
             paper_title[i] = "_".join(list)
             list = paper_title[i].split("</sup>")
             paper_title[i] = "_".join(list)
-            
-            
             if (paper_web[i].find("arxiv") != -1): #查看网址中是否包含arxiv词汇
                 print(paper_title[i])
                 path_dir = "C:\\Users\\pyl\\Desktop\\"
@@ -70,5 +66,5 @@ def ans(name):
                 path = paper_title[i] + "pdf"
                 if path not in dir_list:
                     get_pdf_arxiv(paper_web[i], path_dir + path)
-    print(s)
     return s
+
